@@ -1,26 +1,26 @@
-import { AppBar,Box,Button,Toolbar, Typography ,IconButton, Tooltip, Menu, MenuItem} from "@mui/material"
+import { AppBar, Box, Button, Toolbar, Typography, IconButton, Tooltip, Menu, MenuItem } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React from "react"
-export const Navbar = ()=>{
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const navItems = ['My profile','Wishlist','My Cart','Login','Logout'];
-      const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-      };
-      const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-      };
-    return (
-        <Box sx={{ flexGrow: 1 }}>
+export const Navbar = () => {
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const navItems = ['My profile', 'Wishlist', 'My Cart', 'Login', 'Logout'];
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  return (
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ marginLeft:'10px'}}>
+          <Typography variant="h6" component="div" sx={{ marginLeft: '10px' }}>
             Ekart
           </Typography>
-          <Box sx={{ marginLeft:'1300px'}}>
+          <Box sx={{ marginLeft: '1300px' }}>
             <Tooltip title="View menu">
               <IconButton onClick={handleOpenUserMenu} >
-                <AccountCircleIcon fontSize="large"/>
+                <AccountCircleIcon fontSize="large" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -49,5 +49,5 @@ export const Navbar = ()=>{
         </Toolbar>
       </AppBar>
     </Box>
-    )
+  )
 }
