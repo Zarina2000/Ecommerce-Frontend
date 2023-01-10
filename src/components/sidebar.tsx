@@ -27,7 +27,7 @@ export function Sidebar() {
       >
         <Toolbar><Typography variant="h6">
           Filter  </Typography></Toolbar>
-        <List sx={{marginTop:'-20px'}}>
+        <List >
           {['Price', 'Brand'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>

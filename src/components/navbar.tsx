@@ -1,15 +1,36 @@
-import { AppBar, Box, Button, Toolbar, Typography, IconButton, Tooltip, Menu, MenuItem } from "@mui/material"
+import { AppBar, Box, Button, Toolbar, Typography, IconButton, Tooltip, Menu, MenuItem, Avatar } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React from "react"
+import React, { useState } from "react"
+import { Link } from "react-router-dom";
+import { Login } from "./login";
+import {getUserProfile} from '../services/UserProfileService';
+import { useQuery } from "react-query";
+interface NavItems {
+    text : string;
+    link : string;
+}
 export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const navItems = ['My profile', 'Wishlist', 'My Cart', 'Login', 'Logout'];
+  const[picture,setPicture]=useState<null|string>(null);
+  const OnSuccess = ()  => {
+    setPicture(data?.data.picture);
+    console.log(picture);
+    
+}
+
+const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetchInterval : 6000 });
+  const navItems : NavItems[] = [{text : "Cart",link : "cart"},{text : "Profile",link : "Profile"},{text : "Logout",link : "logout"}];
+ // const navItems = ['My profile', 'Wishlist', 'My Cart', 'Login', 'Logout'];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const [open,setOpen] = useState(false);
+  const handleOpen = ()=>{
+    setOpen(true);
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -20,7 +41,8 @@ export const Navbar = () => {
           <Box sx={{ marginLeft: '1300px' }}>
             <Tooltip title="View menu">
               <IconButton onClick={handleOpenUserMenu} >
-                <AccountCircleIcon fontSize="large" />
+              {!picture && <AccountCircleIcon fontSize="large"/>}
+              {picture && <Avatar alt = "Profile Picture" src={picture}/>}
               </IconButton>
             </Tooltip>
             <Menu
@@ -39,15 +61,22 @@ export const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {navItems.map((menu) => (
-                <MenuItem key={menu} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{menu}</Typography>
+              {navItems.map((navItems) => (
+                <MenuItem key={navItems.text} onClick={handleCloseUserMenu}>
+                    <Link to={navItems.text}  style={{
+                        color : "black",
+                        textDecoration: "none"
+                    }}> <Typography>{navItems.text}</Typography> </Link>
                 </MenuItem>
               ))}
+              <MenuItem>
+              <Button onClick={handleOpen} variant="text">Login</Button>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </AppBar>
+      <Login open={open} setOpen={setOpen}/>
     </Box>
   )
 }
