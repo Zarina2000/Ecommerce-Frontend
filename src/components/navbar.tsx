@@ -13,16 +13,13 @@ interface NavItems {
 export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [picture, setPicture] = useState<null | string>(null);
-  //   const OnSuccess = ()  => {
-  //     setPicture(data?.data.picture);
-  //     console.log(picture);
-
-  // }
+ 
   const logincheck = () => {
     console.log("in check");
     if (localStorage.getItem("picture") != null) {
       setPicture(localStorage.getItem("picture"));
       console.log("in setLogged");
+     
     }
   }
 
@@ -30,13 +27,14 @@ export const Navbar = () => {
     googleLogout();
     localStorage.clear();
     console.log("Logout Succesful");
+    window.location.reload();
   };
 
 
   useEffect(logincheck, [, picture]);
 
   // const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetchInterval : 6000 });
-  const navItems: NavItems[] = [{ text: "PRODUCTS", link: "products" }, { text: "PROFILE", link: "Profile" }, { text: "", link: "AddProduct" }];
+  const navItems: NavItems[] = [{ text: "Products", link: "products" }, { text: "Profile", link: "Profile" }, { text: "AddProduct", link: "AddProduct" }];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -86,10 +84,10 @@ export const Navbar = () => {
                 </MenuItem>
               ))}
               <MenuItem onClick={handleOpen}>
-                LOGIN
+                Login
               </MenuItem>
               <MenuItem onClick={logoutHandler}>
-                LOGOUT
+                Logout
               </MenuItem>
             </Menu>
           </Box>

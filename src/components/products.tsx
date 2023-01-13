@@ -73,19 +73,20 @@ export const ViewProduct = () => {
     }
 
     function sortAscending(): any {
-        sortProduct('asc').then((data) => {
+        sortProduct(min,max,'asc').then((data) => {
             setProduct(data.data)
         })
     }
     function sortdecending(): any {
-        sortProduct('desc').then((data) => {
+        sortProduct(min,max,'desc').then((data) => {
             setProduct(data.data)
         })
         console.log("hi");
     }
-
+  
     const [min, setMin] = useState('');
     const [max, setMax] = useState('');
+    const [sort, setSort] = useState('asc');
     const handleOption = (state: string) => {
         if (state === "ASC") {
             sortdecending();
@@ -103,6 +104,7 @@ export const ViewProduct = () => {
         e.preventDefault();
         if (validateFilter()) {
             await filterProduct({
+                sort:sort,
                 min: min,
                 max: max
             }).then((data) => {

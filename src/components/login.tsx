@@ -37,6 +37,7 @@ export const Login = ({ open, setOpen }: prop) => {
             setOpen(false);
             addUser(credentialResponse.credential);
         }
+        window.location.reload();
     };
     return (
         <Modal
