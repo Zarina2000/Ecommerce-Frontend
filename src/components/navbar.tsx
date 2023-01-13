@@ -13,7 +13,7 @@ interface NavItems {
 export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [picture, setPicture] = useState<null | string>(null);
- 
+
   const logincheck = () => {
     console.log("in check");
     if (localStorage.getItem("picture") != null) {
@@ -22,19 +22,6 @@ export const Navbar = () => {
      
     }
   }
-
-  const logoutHandler = () => {
-    googleLogout();
-    localStorage.clear();
-    console.log("Logout Succesful");
-    window.location.reload();
-  };
-
-
-  useEffect(logincheck, [, picture]);
-
-  // const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetchInterval : 6000 });
-  const navItems: NavItems[] = [{ text: "Products", link: "products" }, { text: "Profile", link: "Profile" }, { text: "AddProduct", link: "AddProduct" }];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -44,6 +31,49 @@ export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
+  }
+  const logoutHandler = () => {
+    googleLogout();
+    localStorage.clear();
+    console.log("Logout Succesful");
+    window.location.reload();
+  };
+  const [loggedIn, setLoggedIn] = useState(false)
+  const getLogged = () : any =>{
+
+    if(loggedIn){
+    return (
+        <MenuItem>
+        <Button style={{
+                color : "black",
+                textDecoration: "none"
+            }} onClick={logoutHandler}>Logout</Button>
+        </MenuItem>
+        )
+    }
+
+    else{
+        return (
+            <MenuItem>
+            <Button style={{
+                color : "black",
+                textDecoration: "none"
+
+            }} onClick={handleOpen}>Login</Button>
+
+            </MenuItem>
+
+        )
+
+          }
+    }
+  useEffect(logincheck, [, picture]);
+  var navItems : NavItems[];
+  if(loggedIn){
+    navItems = [{ text: "Products", link: "products" }, { text: "AddProduct", link: "AddProduct" }];
+  }
+  else {
+    navItems = [];
   }
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -83,17 +113,12 @@ export const Navbar = () => {
                   }}> <Typography>{navItems.text}</Typography> </Link>
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleOpen}>
-                Login
-              </MenuItem>
-              <MenuItem onClick={logoutHandler}>
-                Logout
-              </MenuItem>
+              {getLogged()}
             </Menu>
           </Box>
         </Toolbar>
       </AppBar>
-      <Login open={open} setOpen={setOpen} />
+      <Login open={open} setOpen={setOpen} setLoggedIn={setLoggedIn} />
     </Box>
   )
 }

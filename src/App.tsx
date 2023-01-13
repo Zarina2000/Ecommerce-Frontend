@@ -8,7 +8,6 @@ function App() {
   return (
     <div className="App">
     <Navbar></Navbar>
-    {/* <Sidebar></Sidebar> */}
     <Outlet></Outlet>
     </div>
   );

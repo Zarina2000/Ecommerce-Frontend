@@ -42,7 +42,7 @@ export const AddProduct = () => {
       price: price,
       image: image
     });
-    navigate(`/home`)
+    navigate(`/products`)
   }
   }
   return (

@@ -3,14 +3,16 @@ import { googleLogout } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { addUser } from '../services/LoginService';
+import { Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import jwt_decode from "jwt-decode";
 interface prop {
     open: boolean;
-    setOpen: (value: boolean) => void
+    setOpen: (value: boolean) => void,
+    setLoggedIn : (value: boolean) => void
 }
-export const Login = ({ open, setOpen }: prop) => {
-    const [loggedIn, setLoggedIn] = useState(false)
+export const Login = ({ open, setOpen ,setLoggedIn}: prop) => {
+    const navigate = useNavigate();
     const handleClose = () => {
         setOpen(false);
     }
@@ -37,7 +39,7 @@ export const Login = ({ open, setOpen }: prop) => {
             setOpen(false);
             addUser(credentialResponse.credential);
         }
-        window.location.reload();
+        navigate(`/products`)
     };
     return (
         <Modal
