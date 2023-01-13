@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Sidebar } from './components/sidebar';
-// import { Products } from './components/products';
+ import { AddProduct } from './components/addProduct';
+ import { ViewProduct } from './components/products';
  import { Login } from './components/login';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import { QueryClientProvider,QueryClient } from 'react-query';
@@ -16,7 +17,9 @@ const router = createBrowserRouter([
       { path : "home", element : <Sidebar/>, children : [
           // { path : "products", element : <Products/> } 
         ]
-      }
+      },
+      { path : "AddProduct", element : <AddProduct/> },
+      { path : "products", element : <ViewProduct/> } 
     ]
   }
 

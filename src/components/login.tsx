@@ -30,8 +30,9 @@ export const Login = ({ open, setOpen }: prop) => {
         console.log(credentialResponse.credential);
         if (credentialResponse.credential !== undefined) {
             setLoggedIn(true);
-            var decoded = jwt_decode(credentialResponse.credential);
+            var decoded:any = jwt_decode(credentialResponse.credential);
             localStorage.setItem('token', credentialResponse.credential);
+            localStorage.setItem('picture', decoded.picture);
             console.log(decoded);
             setOpen(false);
             addUser(credentialResponse.credential);

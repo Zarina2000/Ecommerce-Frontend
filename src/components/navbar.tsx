@@ -1,34 +1,50 @@
 import { AppBar, Box, Button, Toolbar, Typography, IconButton, Tooltip, Menu, MenuItem, Avatar } from "@mui/material"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { Login } from "./login";
-import {getUserProfile} from '../services/UserProfileService';
+import { getUserProfile } from '../services/UserProfileService';
 import { useQuery } from "react-query";
+import { googleLogout } from "@react-oauth/google";
 interface NavItems {
-    text : string;
-    link : string;
+  text: string;
+  link: string;
 }
 export const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const[picture,setPicture]=useState<null|string>(null);
-  const OnSuccess = ()  => {
-    setPicture(data?.data.picture);
-    console.log(picture);
-    
-}
+  const [picture, setPicture] = useState<null | string>(null);
+  //   const OnSuccess = ()  => {
+  //     setPicture(data?.data.picture);
+  //     console.log(picture);
 
-const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetchInterval : 6000 });
-  const navItems : NavItems[] = [{text : "Cart",link : "cart"},{text : "Profile",link : "Profile"},{text : "Logout",link : "logout"}];
- // const navItems = ['My profile', 'Wishlist', 'My Cart', 'Login', 'Logout'];
+  // }
+  const logincheck = () => {
+    console.log("in check");
+    if (localStorage.getItem("picture") != null) {
+      setPicture(localStorage.getItem("picture"));
+      console.log("in setLogged");
+    }
+  }
+
+  const logoutHandler = () => {
+    googleLogout();
+    localStorage.clear();
+    console.log("Logout Succesful");
+  };
+
+
+  useEffect(logincheck, [, picture]);
+
+  // const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetchInterval : 6000 });
+  const navItems: NavItems[] = [{ text: "PRODUCTS", link: "products" }, { text: "PROFILE", link: "Profile" }, { text: "", link: "AddProduct" }];
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const [open,setOpen] = useState(false);
-  const handleOpen = ()=>{
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
     setOpen(true);
   }
   return (
@@ -41,8 +57,8 @@ const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetch
           <Box sx={{ marginLeft: '1300px' }}>
             <Tooltip title="View menu">
               <IconButton onClick={handleOpenUserMenu} >
-              {!picture && <AccountCircleIcon fontSize="large"/>}
-              {picture && <Avatar alt = "Profile Picture" src={picture}/>}
+                {!picture && <AccountCircleIcon fontSize="large" />}
+                {picture && <Avatar alt="Profile Picture" src={picture} />}
               </IconButton>
             </Tooltip>
             <Menu
@@ -63,20 +79,23 @@ const {data} = useQuery("userData",getUserProfile,{onSuccess : OnSuccess,refetch
             >
               {navItems.map((navItems) => (
                 <MenuItem key={navItems.text} onClick={handleCloseUserMenu}>
-                    <Link to={navItems.text}  style={{
-                        color : "black",
-                        textDecoration: "none"
-                    }}> <Typography>{navItems.text}</Typography> </Link>
+                  <Link to={navItems.text} style={{
+                    color: "black",
+                    textDecoration: "none"
+                  }}> <Typography>{navItems.text}</Typography> </Link>
                 </MenuItem>
               ))}
-              <MenuItem>
-              <Button onClick={handleOpen} variant="text">Login</Button>
+              <MenuItem onClick={handleOpen}>
+                LOGIN
+              </MenuItem>
+              <MenuItem onClick={logoutHandler}>
+                LOGOUT
               </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </AppBar>
-      <Login open={open} setOpen={setOpen}/>
+      <Login open={open} setOpen={setOpen} />
     </Box>
   )
 }
